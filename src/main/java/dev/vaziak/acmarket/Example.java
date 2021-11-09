@@ -5,7 +5,7 @@ import dev.vaziak.acmarket.response.impl.Resource;
 
 import java.util.Objects;
 
-public class Test {
+public class Example {
     public static void main(String[] args) {
         ACMarket acMarket = new ACMarket(null);
 

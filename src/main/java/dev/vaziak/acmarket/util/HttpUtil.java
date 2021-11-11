@@ -13,19 +13,26 @@ public class HttpUtil {
         httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         httpURLConnection.setRequestProperty("User-Agent", "acmarket4j");
 
-        DataInputStream input = new DataInputStream(httpURLConnection.getInputStream());
-        StringBuilder stringBuilder = new StringBuilder();
+        int responseCode = httpURLConnection.getResponseCode();
+        String response;
 
-        int c = input.read();
+        if (responseCode == 200) {// Our request was sent back as OK from the server.
+            DataInputStream input = new DataInputStream(httpURLConnection.getInputStream());
+            StringBuilder stringBuilder = new StringBuilder();
 
-        while (c != -1) {
-            stringBuilder.append((char) c);
-            c = input.read();
+            int c = input.read();
+
+            while (c != -1) {
+                stringBuilder.append((char) c);
+                c = input.read();
+            }
+
+            response = stringBuilder.toString();
+
+            input.close();
+        } else {
+            throw new RuntimeException("Failed to send post request (" + responseCode + ").");
         }
-
-        String response = stringBuilder.toString();
-
-        input.close();
 
         return response;
     }
